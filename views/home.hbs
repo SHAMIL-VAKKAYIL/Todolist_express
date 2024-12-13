@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>Document</title>
+</head>
+<style>
+    
+</style>
+
+<body>
+    <div class="main">
+        <div class="head">
+            <img src="/images/todo.png" alt="" style="height: 9vh;">
+            <h2>ToDo <span style="color: #d2691e;">List</span></h2>
+        </div>
+        <div class="form">
+            <input class="inp" type="text" name="" placeholder="Type Here" id="Titem">
+            <button onclick="addItem()">Add</button>
+        </div>
+        <div>
+            {{#each Items}}
+            
+            <div class="list">
+                <li type="none">{{item}}</li>
+                <img src="/images/trash.png" alt="" class="Ticon" onclick="remItem('{{item}}')">
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+
+    <script>
+        let Todo = ''
+        const addItem = () => {
+            Todo = document.getElementById('Titem').value
+
+            try {
+                const response = fetch('/getItem', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Todo })
+                })
+                window.location.href = '/'
+
+            } catch (err) {
+                alert('faild', err)
+            }
+        }
+        const remItem = async (item) => {
+            try {
+                await fetch('/delItem', {
+                    method: 'delete',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ item })
+                })
+                window.location.href = '/'
+
+            } catch (err) {
+                console.log('faild', err)
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
